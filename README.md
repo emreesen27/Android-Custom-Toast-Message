@@ -1,4 +1,4 @@
-# Android-Custom-Toast-Message
+# Android Custom Toast Message (SnToast)
 Customizable Toast Message Library For Android
 
 #### Add this in your root build.gradle file
