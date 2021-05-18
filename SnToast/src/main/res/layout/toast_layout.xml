@@ -8,14 +8,14 @@
     app:cardElevation="8dp">
 
     <LinearLayout
-        android:id="@+id/main_layout"
+        android:id="@+id/toast_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="3dp">
 
         <ImageView
-            android:id="@+id/image"
+            android:id="@+id/toast_icon"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginStart="5dp"
@@ -24,7 +24,7 @@
             android:src="@drawable/ic_information" />
 
         <TextView
-            android:id="@+id/tv_msg"
+            android:id="@+id/toast_msg"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="5dp"
