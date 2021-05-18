@@ -3,5 +3,5 @@
     <color name="errorColor">#FFE53935</color>
     <color name="infoColor">#FF342FA2</color>
     <color name="successColor">#FF4A934A</color>
-    <color name="warningColor">#FFFFD300</color>
+    <color name="warningColor">#FFFFC107</color>
 </resources>
