@@ -23,7 +23,7 @@ allprojects {
 #### Add this to your module's build.gradle file
 ```gradle
 dependencies {
-  implementation 'com.github.emreesen27:Android-Custom-Toast-Message:1.0.0'
+  implementation 'com.github.emreesen27:Android-Custom-Toast-Message:1.0.1'
 }
 ```
 
