@@ -30,22 +30,32 @@ dependencies {
 ## Usage
 It very simple!
 
-#### Standart
-```java
-SnToast.standard(YourActivity.this,"Success !", SnToast.ToastType.Success);
-```
 ##### Toast Types
-* Success
-* Error
-* Warning
-* Info
+* SUCCESS
+* ERROR
+* WARNING
+* INFORMATION
 
-#### You can edit the animation state and duration value.
+#### Standard
 ```java
-SnToast.standard(YourActivity.this,"Success !", SnToast.ToastType.Success, 4000, false);
+      new SnToast.Standard()
+                .context(YourActivity.this)
+                .type(Type.SUCCESS)
+                .message("Success !")
+                // .animation(false or true) optional
+                // .duration(int ms) optional
+                .build();
 ```
 #### Custom
 ```java
-SnToast.custom(MainActivity.this,"Custom", R.color.backgroundColor,R.color.textColor, R.drawable.customIcon);
+       new SnToast.Custom()
+                .context(YourActivity.this)
+                .backgroundColor(R.color.your_bg_color)
+                .textColor(R.color.your_text_color)
+                .icon(R.drawable.your_icon)
+                // .animation(false or true) optional
+                // .duration(int ms) optional
+                .message("Custom !!!")
+                .build();
 ```
 
