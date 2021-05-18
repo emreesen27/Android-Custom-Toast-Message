@@ -18,16 +18,30 @@ import androidx.annotation.Nullable;
 
 /**
  * @author Aydın Emre ESEN
- * @version 1.0.0
- * @since 2020-05-16
+ * @version 1.0.1
+ * @since 2021-05-18
  */
 
 public class SnToast {
+    // Main layout of toast message
     private LinearLayout toastLayout;
+
+    // Unless customized, it is determined by type value.
     private ImageView toastIcon;
+
+    // It must be set manually for both custom and standard.
     private TextView toastMessage;
 
-
+    /**
+     * @param context         It should be strictly set for both custom and standard.
+     * @param message         It should be strictly set for both custom and standard.
+     * @param type            Type value is set only for standard. For custom, this value is set to null.
+     * @param animation       Must be set in both cases.
+     * @param duration        Must be set in both cases.
+     * @param backgroundColor This value is set for custom only. For standard, this value is set to null.
+     * @param textColor       This value is set for custom only. For standard, this value is set to null.
+     * @param icon            This value is set for custom only. For standard, this value is set to null.
+     */
     private void init(
             @NonNull Context context,
             @NonNull String message,
@@ -76,6 +90,9 @@ public class SnToast {
         handler.postDelayed(dialog::dismiss, duration);
     }
 
+    /**
+     * Sets the design of the standard toast message.
+     */
     private void setDesign(@NonNull Type type, @NonNull Context context) {
         if (Type.INFORMATION == type) {
             toastLayout.setBackgroundColor(context.getColor(R.color.infoColor));
@@ -92,12 +109,18 @@ public class SnToast {
         }
     }
 
+    /**
+     * Sets the design of the custom toast message.
+     */
     private void setCustomDesign(int backgroundColor, int textColor, int icon, Context context) {
         toastMessage.setTextColor(context.getColor(textColor));
         toastLayout.setBackgroundColor(context.getColor(backgroundColor));
         toastIcon.setImageResource(icon);
     }
 
+    /**
+     * Starts animation for toast icon.
+     */
     private void startAnimation() {
         ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
                 toastIcon,
@@ -111,7 +134,7 @@ public class SnToast {
 
 
     public static class Standard {
-        private boolean animation = false;
+        private boolean animation = true;
         private int duration = 3000;
         private Context context;
         private String message;
@@ -120,6 +143,7 @@ public class SnToast {
         public Standard() {
         }
 
+        // Required
         public Standard context(Context context) {
             this.context = context;
             if (context == null)
@@ -128,6 +152,7 @@ public class SnToast {
                 return this;
         }
 
+        // Required
         public Standard message(String message) {
             this.message = message;
             if (message == null)
@@ -136,6 +161,7 @@ public class SnToast {
                 return this;
         }
 
+        // Required
         public Standard type(Type type) {
             this.type = type;
             if (type == null)
@@ -144,16 +170,24 @@ public class SnToast {
                 return this;
         }
 
+        // Not Required
+        @SuppressWarnings("unused")
         public Standard animation(boolean animation) {
             this.animation = animation;
             return this;
         }
 
+        // Not Required
+        @SuppressWarnings("unused")
         public Standard duration(int duration) {
             this.duration = duration;
             return this;
         }
 
+        /**
+         * It should be called after the settings are set.
+         */
+        // Required
         public void build() {
             if (context == null)
                 throw new AssertionError("Context assignment is required.");
@@ -168,7 +202,7 @@ public class SnToast {
     }
 
     public static class Custom {
-        private boolean animation = false;
+        private boolean animation = true;
         private int duration = 3000;
         private int backgroundColor = 0;
         private int textColor = 0;
@@ -179,6 +213,7 @@ public class SnToast {
         public Custom() {
         }
 
+        // Required
         public Custom context(Context context) {
             this.context = context;
             if (context == null)
@@ -186,6 +221,7 @@ public class SnToast {
             return this;
         }
 
+        // Required
         public Custom message(String message) {
             this.message = message;
             if (message == null)
@@ -194,6 +230,7 @@ public class SnToast {
                 return this;
         }
 
+        // Required
         public Custom backgroundColor(int backgroundColor) {
             this.backgroundColor = backgroundColor;
             if (backgroundColor == 0)
@@ -202,6 +239,7 @@ public class SnToast {
                 return this;
         }
 
+        // Required
         public Custom textColor(int textColor) {
             this.textColor = textColor;
             if (textColor == 0)
@@ -210,6 +248,7 @@ public class SnToast {
                 return this;
         }
 
+        // Required
         public Custom icon(int icon) {
             this.icon = icon;
             if (icon == 0)
@@ -218,17 +257,35 @@ public class SnToast {
                 return this;
         }
 
+        // Not Required Default: True
+        @SuppressWarnings("unused")
+        public Custom animation(boolean animation) {
+            this.animation = animation;
+            return this;
+        }
+
+        // Not Required Default: 3000 (ms)
+        @SuppressWarnings("unused")
+        public Custom duration(int duration) {
+            this.duration = duration;
+            return this;
+        }
+
+        /**
+         * It should be called after the settings are set.
+         */
+        // Required
         public void build() {
             if (context == null)
-                throw new AssertionError("Context assignment is required.");
+                throw new AssertionError("SnToast - Context assignment is required.");
             if (message == null)
-                throw new AssertionError("Message assignment is required.");
+                throw new AssertionError("SnToast - Message assignment is required.");
             if (backgroundColor == 0)
-                throw new AssertionError("BackgroundColor assignment is required.");
+                throw new AssertionError("SnToast - BackgroundColor assignment is required.");
             if (textColor == 0)
-                throw new AssertionError("TextColor assignment is required.");
+                throw new AssertionError("SnToast - TextColor assignment is required.");
             if (icon == 0)
-                throw new AssertionError("Icon assignment is required.");
+                throw new AssertionError("SnToast - Icon assignment is required.");
 
             SnToast snToast = new SnToast();
             snToast.init(context, message, null, animation, duration, backgroundColor, textColor, icon);
