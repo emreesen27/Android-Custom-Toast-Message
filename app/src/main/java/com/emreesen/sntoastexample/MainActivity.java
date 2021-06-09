@@ -22,8 +22,10 @@ public class MainActivity extends AppCompatActivity {
                 .context(MainActivity.this)
                 .type(Type.SUCCESS)
                 .message("Success !")
-                // .animation(false or true) optional
-                // .duration(int ms) optional
+                // .iconSize(int size) Optional Default: 34dp
+                // .textSize(int size) Optional Default 18sp
+                // .animation(false or true) Optional Default: True
+                // .duration(int ms) Optional Default: 3000ms
                 .build();
     }
 
@@ -33,8 +35,10 @@ public class MainActivity extends AppCompatActivity {
                 .backgroundColor(R.color.teal_200)
                 .textColor(R.color.white)
                 .icon(R.drawable.ic_launcher_foreground)
-                // .animation(false or true) optional
-                // .duration(int ms) optional
+                // .iconSize(int size) Optional Default: 34dp
+                // .textSize(int size) Optional Default 18sp
+                // .animation(false or true) Optional Default: True
+                // .duration(int ms) Optional Default: 3000ms
                 .message("Custom !!!")
                 .build();
     }

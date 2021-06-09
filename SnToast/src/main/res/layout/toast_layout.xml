@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="25dp"
@@ -11,9 +12,10 @@
         android:id="@+id/toast_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="120dp"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:padding="3dp">
+        android:padding="3dp"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:id="@+id/toast_icon"
@@ -27,13 +29,13 @@
         <TextView
             android:id="@+id/toast_msg"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:gravity="center_vertical"
+            android:includeFontPadding="false"
             android:padding="5dp"
             android:textColor="#FFFFFFFF"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 

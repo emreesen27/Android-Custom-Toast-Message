@@ -18,8 +18,8 @@ import androidx.annotation.Nullable;
 
 /**
  * @author Aydın Emre ESEN
- * @version 1.0.1
- * @since 2021-05-18
+ * @version 1.0.2
+ * @since 2021-05-18 update: 2021-06-09
  */
 
 public class SnToast {
@@ -36,8 +36,10 @@ public class SnToast {
      * @param context         It should be strictly set for both custom and standard.
      * @param message         It should be strictly set for both custom and standard.
      * @param type            Type value is set only for standard. For custom, this value is set to null.
-     * @param animation       Must be set in both cases.
-     * @param duration        Must be set in both cases.
+     * @param animation       Optional in both cases. Default: True
+     * @param duration        Optional in both cases. Default: 3000ms
+     * @param textSize        Optional in both cases. Default: 18sp
+     * @param iconSize        optional in both cases. Default: 34dp
      * @param backgroundColor This value is set for custom only. For standard, this value is set to null.
      * @param textColor       This value is set for custom only. For standard, this value is set to null.
      * @param icon            This value is set for custom only. For standard, this value is set to null.
@@ -48,12 +50,14 @@ public class SnToast {
             @Nullable Type type,
             boolean animation,
             int duration,
+            int textSize,
+            int iconSize,
             int backgroundColor,
             int textColor,
             int icon
     ) {
 
-        //creates dialog and set its settings
+        // Creates dialog and set its settings
         Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -61,11 +65,20 @@ public class SnToast {
         toastLayout = dialog.findViewById(R.id.toast_layout);
         toastIcon = dialog.findViewById(R.id.toast_icon);
 
-        //Set message
+        // Set icon size
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) toastIcon.getLayoutParams();
+        params.width = dpToPx(iconSize, context);
+        params.height = dpToPx(iconSize, context);
+        toastIcon.setLayoutParams(params);
+
+        // Set message
         toastMessage = dialog.findViewById(R.id.toast_msg);
         toastMessage.setText(message);
 
-        //Set window configurations
+        // Set Text size
+        toastMessage.setTextSize(textSize);
+
+        // Set window configurations
         Window window = dialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
         wlp.gravity = Gravity.BOTTOM;
@@ -73,13 +86,13 @@ public class SnToast {
         window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         window.setAttributes(wlp);
 
-        //set toast design
+        // Set toast design
         if (type == null)
             setCustomDesign(backgroundColor, textColor, icon, context);
         else
             setDesign(type, context);
 
-        //set animation
+        // Set animation
         if (animation)
             startAnimation();
 
@@ -124,21 +137,30 @@ public class SnToast {
     private void startAnimation() {
         ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
                 toastIcon,
-                PropertyValuesHolder.ofFloat("scaleX", 1.09f),
-                PropertyValuesHolder.ofFloat("scaleY", 1.09f));
+                PropertyValuesHolder.ofFloat("scaleX", 1.1f),
+                PropertyValuesHolder.ofFloat("scaleY", 1.1f));
         scaleDown.setDuration(500);
         scaleDown.setRepeatCount(ObjectAnimator.INFINITE);
         scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
         scaleDown.start();
     }
 
+    /**
+     * For icon sizing. (dp to px)
+     */
+    private int dpToPx(int dp, Context context) {
+        float density = context.getResources().getDisplayMetrics().density;
+        return Math.round((float) dp * density);
+    }
 
     public static class Standard {
-        private boolean animation = true;
-        private int duration = 3000;
         private Context context;
         private String message;
         private Type type;
+        private boolean animation = true;
+        private int duration = 3000;
+        private int textSize = 18;
+        private int iconSize = 34;
 
         public Standard() {
         }
@@ -170,17 +192,31 @@ public class SnToast {
                 return this;
         }
 
-        // Not Required
+        // Not Required Default: True
         @SuppressWarnings("unused")
         public Standard animation(boolean animation) {
             this.animation = animation;
             return this;
         }
 
-        // Not Required
+        // Not Required Default: 3000 (ms)
         @SuppressWarnings("unused")
         public Standard duration(int duration) {
             this.duration = duration;
+            return this;
+        }
+
+        // Not Required
+        @SuppressWarnings("unused")
+        public Standard textSize(int textSize) {
+            this.textSize = textSize;
+            return this;
+        }
+
+        // Not Required
+        @SuppressWarnings("unused")
+        public Standard iconSize(int iconSize) {
+            this.iconSize = iconSize;
             return this;
         }
 
@@ -197,18 +233,22 @@ public class SnToast {
                 throw new AssertionError("Type assignment is required.");
 
             SnToast snToast = new SnToast();
-            snToast.init(context, message, type, animation, duration, 0, 0, 0);
+            snToast.init(context, message, type, animation,
+                    duration, textSize, iconSize, 0, 0, 0);
         }
     }
 
     public static class Custom {
-        private boolean animation = true;
-        private int duration = 3000;
+        private Context context;
+        private String message;
         private int backgroundColor = 0;
         private int textColor = 0;
         private int icon = 0;
-        private Context context;
-        private String message;
+        private boolean animation = true;
+        private int duration = 3000;
+        private int textSize = 18;
+        private int iconSize = 34;
+
 
         public Custom() {
         }
@@ -271,6 +311,20 @@ public class SnToast {
             return this;
         }
 
+        // Not Required Default: 18 sp
+        @SuppressWarnings("unused")
+        public Custom textSize(int textSize) {
+            this.textSize = textSize;
+            return this;
+        }
+
+        // Not Required Default: 34 dp
+        @SuppressWarnings("unused")
+        public Custom iconSize(int iconSize) {
+            this.iconSize = iconSize;
+            return this;
+        }
+
         /**
          * It should be called after the settings are set.
          */
@@ -288,7 +342,8 @@ public class SnToast {
                 throw new AssertionError("SnToast - Icon assignment is required.");
 
             SnToast snToast = new SnToast();
-            snToast.init(context, message, null, animation, duration, backgroundColor, textColor, icon);
+            snToast.init(context, message, null, animation,
+                    duration, textSize, iconSize, backgroundColor, textColor, icon);
         }
     }
 }
