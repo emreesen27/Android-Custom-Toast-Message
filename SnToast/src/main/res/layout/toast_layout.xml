@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="15dp"
+    android:layout_margin="25dp"
     app:cardCornerRadius="10dp"
     app:cardElevation="8dp">
 
@@ -11,14 +11,14 @@
         android:id="@+id/toast_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:minWidth="120dp"
+        android:orientation="horizontal"
         android:padding="3dp">
 
         <ImageView
             android:id="@+id/toast_icon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:layout_marginStart="5dp"
             android:contentDescription="@string/image_desc"
             android:padding="5dp"

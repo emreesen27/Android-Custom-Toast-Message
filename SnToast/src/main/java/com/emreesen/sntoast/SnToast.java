@@ -112,7 +112,7 @@ public class SnToast {
     /**
      * Sets the design of the custom toast message.
      */
-    private void setCustomDesign(int backgroundColor, int textColor, int icon, Context context) {
+    private void setCustomDesign(int backgroundColor, int textColor, int icon, @NonNull Context context) {
         toastMessage.setTextColor(context.getColor(textColor));
         toastLayout.setBackgroundColor(context.getColor(backgroundColor));
         toastIcon.setImageResource(icon);
@@ -124,8 +124,8 @@ public class SnToast {
     private void startAnimation() {
         ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
                 toastIcon,
-                PropertyValuesHolder.ofFloat("scaleX", 1.2f),
-                PropertyValuesHolder.ofFloat("scaleY", 1.2f));
+                PropertyValuesHolder.ofFloat("scaleX", 1.09f),
+                PropertyValuesHolder.ofFloat("scaleY", 1.09f));
         scaleDown.setDuration(500);
         scaleDown.setRepeatCount(ObjectAnimator.INFINITE);
         scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
