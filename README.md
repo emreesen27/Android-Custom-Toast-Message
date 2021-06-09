@@ -1,16 +1,6 @@
 # Android Custom Toast Message (SnToast)
 Customizable Toast Message Library For Android
 
-
- Success Toast             | Error Toast 
-:-------------------------:|:-------------------------:
-<img src="https://github.com/emreesen27/Android-Custom-Toast-Message/blob/assets/success.gif?raw=true" width="250" height="100" /> | <img src="https://github.com/emreesen27/Android-Custom-Toast-Message/blob/assets/error.gif?raw=true" width="250" height="100" />
-
- Warning Toast             |  Information Toast
-:-------------------------:|:-------------------------:
-<img src="https://github.com/emreesen27/Android-Custom-Toast-Message/blob/assets/warning.gif?raw=true" width="250" height="100" /> | <img src="https://github.com/emreesen27/Android-Custom-Toast-Message/blob/assets/info.gif?raw=true" width="250" height="100" />
-
-
 #### Add this in your root build.gradle file
 ```gradle
 allprojects {
@@ -23,10 +13,9 @@ allprojects {
 #### Add this to your module's build.gradle file
 ```gradle
 dependencies {
-  implementation 'com.github.emreesen27:Android-Custom-Toast-Message:1.0.1'
+  implementation 'com.github.emreesen27:Android-Custom-Toast-Message:1.0.2'
 }
 ```
-
 ## Usage
 It very simple!
 
@@ -38,24 +27,39 @@ It very simple!
 
 #### Standard
 ```java
-      new SnToast.Standard()
-                .context(YourActivity.this)
-                .type(Type.SUCCESS)
-                .message("Success !")
-                // .animation(false or true) optional
-                // .duration(int ms) optional
-                .build();
+ new SnToast.Standard()
+      .context(YourActivity.this)
+      .type(Type.SUCCESS)
+      .message("Success !")
+      // .iconSize(int size) Optional Default: 34dp
+      // .textSize(int size) Optional Default 18sp
+      // .animation(false or true) Optional Default: True
+      // .duration(int ms) Optional Default: 3000ms
+      .build();
 ```
 #### Custom
 ```java
-       new SnToast.Custom()
-                .context(YourActivity.this)
-                .backgroundColor(R.color.your_bg_color)
-                .textColor(R.color.your_text_color)
-                .icon(R.drawable.your_icon)
-                // .animation(false or true) optional
-                // .duration(int ms) optional
-                .message("Custom !!!")
-                .build();
+  new SnToast.Custom()
+      .context(YourActivity.this)
+      .backgroundColor(R.color.your_bg_color)
+      .textColor(R.color.your_text_color)
+      .icon(R.drawable.your_icon)
+      // .iconSize(int size) Optional Default: 34dp
+      // .textSize(int size) Optional Default 18sp
+      // .animation(false or true) Optional Default: True
+      // .duration(int ms) Optional Default: 3000ms
+      .message("Custom !!!")
+      .build();
 ```
+
+### Showcase
+ Success Toast             | Error Toast 
+:-------------------------:|:-------------------------:
+<img src="https://github.com/emreesen27/Android-Custom-Toast-Message/blob/assets/success.gif?raw=true"/> | <img src="https://github.com/emreesen27/Android-Custom-Toast-Message/blob/assets/error.gif?raw=true"/>
+
+ Warning Toast             |  Information Toast
+:-------------------------:|:-------------------------:
+<img src="https://github.com/emreesen27/Android-Custom-Toast-Message/blob/assets/warning.gif?raw=true"/> | <img src="https://github.com/emreesen27/Android-Custom-Toast-Message/blob/assets/information.gif?raw=true"/>
+
+
 
