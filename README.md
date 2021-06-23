@@ -1,6 +1,8 @@
 # Android Custom Toast Message (SnToast)
 Customizable Toast Message Library For Android
 
+[![](https://jitpack.io/v/emreesen27/Android-Custom-Toast-Message.svg)](https://jitpack.io/#emreesen27/Android-Custom-Toast-Message)
+
 #### Add this in your root build.gradle file
 ```gradle
 allprojects {
