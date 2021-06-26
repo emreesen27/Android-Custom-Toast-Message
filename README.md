@@ -36,6 +36,7 @@ It very simple!
       // .iconSize(int size) Optional Default: 34dp
       // .textSize(int size) Optional Default 18sp
       // .animation(false or true) Optional Default: True
+      // .cancelable(false or true) Optional Default: False
       // .duration(int ms) Optional Default: 3000ms
       .build();
 ```
@@ -49,6 +50,7 @@ It very simple!
       // .iconSize(int size) Optional Default: 34dp
       // .textSize(int size) Optional Default 18sp
       // .animation(false or true) Optional Default: True
+      // .cancelable(false or true) Optional Default: False
       // .duration(int ms) Optional Default: 3000ms
       .message("Custom !!!")
       .build();
