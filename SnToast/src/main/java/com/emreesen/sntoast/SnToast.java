@@ -49,6 +49,7 @@ public class SnToast {
             @NonNull String message,
             @Nullable Type type,
             boolean animation,
+            boolean cancelable,
             int duration,
             int textSize,
             int iconSize,
@@ -60,7 +61,7 @@ public class SnToast {
         // Creates dialog and set its settings
         Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
+        dialog.setCancelable(cancelable);
         dialog.setContentView(R.layout.toast_layout);
         toastLayout = dialog.findViewById(R.id.toast_layout);
         toastIcon = dialog.findViewById(R.id.toast_icon);
@@ -100,7 +101,11 @@ public class SnToast {
 
         //Set duration
         final Handler handler = new Handler();
-        handler.postDelayed(dialog::dismiss, duration);
+        handler.postDelayed(() -> {
+            if (dialog.isShowing())
+                dialog.dismiss();
+        }, duration);
+
     }
 
     /**
@@ -158,6 +163,7 @@ public class SnToast {
         private String message;
         private Type type;
         private boolean animation = true;
+        private boolean cancelable = false;
         private int duration = 3000;
         private int textSize = 18;
         private int iconSize = 34;
@@ -199,6 +205,13 @@ public class SnToast {
             return this;
         }
 
+        // Not Required Default: False
+        @SuppressWarnings("unused")
+        public Standard cancelable(boolean cancelable) {
+            this.cancelable = cancelable;
+            return this;
+        }
+
         // Not Required Default: 3000 (ms)
         @SuppressWarnings("unused")
         public Standard duration(int duration) {
@@ -233,7 +246,7 @@ public class SnToast {
                 throw new AssertionError("Type assignment is required.");
 
             SnToast snToast = new SnToast();
-            snToast.init(context, message, type, animation,
+            snToast.init(context, message, type, animation, cancelable,
                     duration, textSize, iconSize, 0, 0, 0);
         }
     }
@@ -245,6 +258,7 @@ public class SnToast {
         private int textColor = 0;
         private int icon = 0;
         private boolean animation = true;
+        private boolean cancelable = false;
         private int duration = 3000;
         private int textSize = 18;
         private int iconSize = 34;
@@ -304,6 +318,13 @@ public class SnToast {
             return this;
         }
 
+        // Not Required Default: False
+        @SuppressWarnings("unused")
+        public Custom cancelable(boolean cancelable) {
+            this.cancelable = cancelable;
+            return this;
+        }
+
         // Not Required Default: 3000 (ms)
         @SuppressWarnings("unused")
         public Custom duration(int duration) {
@@ -342,7 +363,7 @@ public class SnToast {
                 throw new AssertionError("SnToast - Icon assignment is required.");
 
             SnToast snToast = new SnToast();
-            snToast.init(context, message, null, animation,
+            snToast.init(context, message, null, animation, cancelable,
                     duration, textSize, iconSize, backgroundColor, textColor, icon);
         }
     }
