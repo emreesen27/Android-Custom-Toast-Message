@@ -47,12 +47,12 @@ It very simple!
       .backgroundColor(R.color.your_bg_color)
       .textColor(R.color.your_text_color)
       .icon(R.drawable.your_icon)
+      .message("Custom !!!")
       // .iconSize(int size) Optional Default: 34dp
       // .textSize(int size) Optional Default 18sp
       // .animation(false or true) Optional Default: True
       // .cancelable(false or true) Optional Default: False
       // .duration(int ms) Optional Default: 3000ms
-      .message("Custom !!!")
       .build();
 ```
 
