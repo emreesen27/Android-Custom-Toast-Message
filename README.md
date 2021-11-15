@@ -56,6 +56,15 @@ It very simple!
       .build();
 ```
 
+
+#### Change Typeface (Standard or Custom)
+```java
+  Typeface type = ResourcesCompat.getFont(getApplicationContext(), R.font.example);
+  .typeface(type) // Optional Default: sans-serif-condensed
+```
+
+
+
 ### Showcase
  Success Toast             | Error Toast 
 :-------------------------:|:-------------------------:
