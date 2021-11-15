@@ -1,7 +1,9 @@
 package com.emreesen.sntoastexample;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 
@@ -18,10 +20,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void normalToast(View view) {
+        Typeface type = ResourcesCompat.getFont(getApplicationContext(), R.font.example);
         new SnToast.Standard()
                 .context(MainActivity.this)
                 .type(Type.SUCCESS)
                 .message("Success !")
+                //.typeface(type) Optional Default: sans-serif-condensed
                 //.cancelable(false or true) Optional Default: False
                 // .iconSize(int size) Optional Default: 34dp
                 // .textSize(int size) Optional Default 18sp
@@ -31,12 +35,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void customToast(View view) {
+        Typeface type = ResourcesCompat.getFont(getApplicationContext(), R.font.example);
         new SnToast.Custom()
                 .context(MainActivity.this)
                 .backgroundColor(R.color.teal_200)
                 .textColor(R.color.white)
                 .icon(R.drawable.ic_launcher_foreground)
                 .message("Custom !!!")
+                .typeface(type)
+                //.typeface(type) Optional Default: sans-serif-condensed
                 //.cancelable(false or true) Optional Default: False
                 // .iconSize(int size) Optional Default: 34dp
                 // .textSize(int size) Optional Default 18sp

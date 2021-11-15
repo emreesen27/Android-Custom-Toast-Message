@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.view.Gravity;
@@ -18,8 +19,8 @@ import androidx.annotation.Nullable;
 
 /**
  * @author Aydın Emre ESEN
- * @version 1.0.2
- * @since 2021-05-18 update: 2021-06-09
+ * @version 1.0.4
+ * @since 2021-05-18 update: 2021-11-15
  */
 
 public class SnToast {
@@ -36,6 +37,7 @@ public class SnToast {
      * @param context         It should be strictly set for both custom and standard.
      * @param message         It should be strictly set for both custom and standard.
      * @param type            Type value is set only for standard. For custom, this value is set to null.
+     * @param typeface        Optional in both cases. Default: Sans-serif-condensed"
      * @param animation       Optional in both cases. Default: True
      * @param duration        Optional in both cases. Default: 3000ms
      * @param textSize        Optional in both cases. Default: 18sp
@@ -48,6 +50,7 @@ public class SnToast {
             @NonNull Context context,
             @NonNull String message,
             @Nullable Type type,
+            @Nullable Typeface typeface,
             boolean animation,
             boolean cancelable,
             int duration,
@@ -78,6 +81,9 @@ public class SnToast {
 
         // Set Text size
         toastMessage.setTextSize(textSize);
+
+        //Set Typeface
+        toastMessage.setTypeface(typeface);
 
         // Set window configurations
         Window window = dialog.getWindow();
@@ -162,6 +168,7 @@ public class SnToast {
         private Context context;
         private String message;
         private Type type;
+        private Typeface typeface = Typeface.create("sans-serif-condensed", Typeface.NORMAL);
         private boolean animation = true;
         private boolean cancelable = false;
         private int duration = 3000;
@@ -196,6 +203,13 @@ public class SnToast {
                 throw new AssertionError("SnToast - Type cannot be null !!!");
             else
                 return this;
+        }
+
+        // Not Required Default: "Sans-serif-condensed"
+        @SuppressWarnings("unused")
+        public Standard typeface(Typeface typeface) {
+            this.typeface = typeface;
+            return this;
         }
 
         // Not Required Default: True
@@ -246,7 +260,7 @@ public class SnToast {
                 throw new AssertionError("Type assignment is required.");
 
             SnToast snToast = new SnToast();
-            snToast.init(context, message, type, animation, cancelable,
+            snToast.init(context, message, type, typeface, animation, cancelable,
                     duration, textSize, iconSize, 0, 0, 0);
         }
     }
@@ -257,6 +271,7 @@ public class SnToast {
         private int backgroundColor = 0;
         private int textColor = 0;
         private int icon = 0;
+        private Typeface typeface = Typeface.create("sans-serif-condensed", Typeface.NORMAL);
         private boolean animation = true;
         private boolean cancelable = false;
         private int duration = 3000;
@@ -311,6 +326,13 @@ public class SnToast {
                 return this;
         }
 
+        // Not Required Default: "Sans-serif-condensed"
+        @SuppressWarnings("unused")
+        public Custom typeface(Typeface typeface) {
+            this.typeface = typeface;
+            return this;
+        }
+
         // Not Required Default: True
         @SuppressWarnings("unused")
         public Custom animation(boolean animation) {
@@ -363,7 +385,7 @@ public class SnToast {
                 throw new AssertionError("SnToast - Icon assignment is required.");
 
             SnToast snToast = new SnToast();
-            snToast.init(context, message, null, animation, cancelable,
+            snToast.init(context, message, null, typeface, animation, cancelable,
                     duration, textSize, iconSize, backgroundColor, textColor, icon);
         }
     }
