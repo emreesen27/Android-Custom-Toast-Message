@@ -15,55 +15,39 @@ allprojects {
 #### Add this to your module's build.gradle file
 ```gradle
 dependencies {
-  implementation 'com.github.emreesen27:Android-Custom-Toast-Message:1.0.4'
+  implementation 'com.github.emreesen27:Android-Custom-Toast-Message:1.0.5'
 }
 ```
 ## Usage
 It very simple!
+
+#### Builder
+```java
+new SnToast.Builder()
+        .context(MainActivity.this)
+        .type(Type.SUCCESS)
+        .message("Success !")
+        //.cancelable(false or true) Optional Default: False
+        // .iconSize(int size) Optional Default: 34dp
+        // .textSize(int size) Optional Default 18sp
+        // .animation(false or true) Optional Default: True
+        // .duration(int ms) Optional Default: 3000ms
+        // .backgroundColor(R.color.example) Default: It is filled according to the toast type. If an assignment is made, the assigned value is used
+        // .icon(R.drawable.example) Default: It is filled according to the toast type. If an assignment is made, the assigned value is used
+        .build();
+```
+
+#### Change Typeface
+```java
+  Typeface type = ResourcesCompat.getFont(getApplicationContext(), R.font.example);
+  .typeface(type) // Optional Default: sans-serif-condensed
+```
 
 ##### Toast Types
 * SUCCESS
 * ERROR
 * WARNING
 * INFORMATION
-
-#### Standard
-```java
- new SnToast.Standard()
-      .context(YourActivity.this)
-      .type(Type.SUCCESS)
-      .message("Success !")
-      // .iconSize(int size) Optional Default: 34dp
-      // .textSize(int size) Optional Default 18sp
-      // .animation(false or true) Optional Default: True
-      // .cancelable(false or true) Optional Default: False
-      // .duration(int ms) Optional Default: 3000ms
-      .build();
-```
-#### Custom
-```java
-  new SnToast.Custom()
-      .context(YourActivity.this)
-      .backgroundColor(R.color.your_bg_color)
-      .textColor(R.color.your_text_color)
-      .icon(R.drawable.your_icon)
-      .message("Custom !!!")
-      // .iconSize(int size) Optional Default: 34dp
-      // .textSize(int size) Optional Default 18sp
-      // .animation(false or true) Optional Default: True
-      // .cancelable(false or true) Optional Default: False
-      // .duration(int ms) Optional Default: 3000ms
-      .build();
-```
-
-
-#### Change Typeface (Standard or Custom)
-```java
-  Typeface type = ResourcesCompat.getFont(getApplicationContext(), R.font.example);
-  .typeface(type) // Optional Default: sans-serif-condensed
-```
-
-
 
 ### Showcase
  Success Toast             | Error Toast 
