@@ -14,42 +14,43 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 
 /**
  * @author Aydın Emre ESEN
- * @version 1.0.4
- * @since 2021-05-18 update: 2021-11-15
+ * @version 1.0.5
+ * @since 2021-05-18 update: 2024-05-01
  */
 
 public class SnToast {
-    // Main layout of toast message
     private LinearLayout toastLayout;
 
     // Unless customized, it is determined by type value.
     private ImageView toastIcon;
 
-    // It must be set manually for both custom and standard.
     private TextView toastMessage;
 
     /**
-     * @param context         It should be strictly set for both custom and standard.
-     * @param message         It should be strictly set for both custom and standard.
-     * @param type            Type value is set only for standard. For custom, this value is set to null.
-     * @param typeface        Optional in both cases. Default: Sans-serif-condensed"
-     * @param animation       Optional in both cases. Default: True
-     * @param duration        Optional in both cases. Default: 3000ms
-     * @param textSize        Optional in both cases. Default: 18sp
-     * @param iconSize        optional in both cases. Default: 34dp
-     * @param backgroundColor This value is set for custom only. For standard, this value is set to null.
-     * @param textColor       This value is set for custom only. For standard, this value is set to null.
-     * @param icon            This value is set for custom only. For standard, this value is set to null.
+     * @param context         Required Default: -
+     * @param message         Required Default: -
+     * @param type            Required Default: -
+     * @param typeface        Optional Default: Sans-serif-condensed"
+     * @param animation       Optional Default: True
+     * @param duration        Optional Default: 3000ms
+     * @param textSize        Optional Default: 18sp
+     * @param iconSize        Optional Default: 34dp
+     * @param backgroundColor Optional Default: It is filled according to the type. If an assignment is made, the assigned value is used
+     * @param textColor       Optional Default: It is filled according to the type. If an assignment is made, the assigned value is used
+     * @param icon            Optional Default: It is filled according to the type. If an assignment is made, the assigned value is used
      */
     private void init(
             @NonNull Context context,
             @NonNull String message,
-            @Nullable Type type,
+            @NonNull Type type,
             @Nullable Typeface typeface,
             boolean animation,
             boolean cancelable,
@@ -82,8 +83,11 @@ public class SnToast {
         // Set Text size
         toastMessage.setTextSize(textSize);
 
-        //Set Typeface
+        // Set Typeface
         toastMessage.setTypeface(typeface);
+
+        // Set Text Color
+        toastMessage.setTextColor(context.getColor(textColor));
 
         // Set window configurations
         Window window = dialog.getWindow();
@@ -93,11 +97,7 @@ public class SnToast {
         window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         window.setAttributes(wlp);
 
-        // Set toast design
-        if (type == null)
-            setCustomDesign(backgroundColor, textColor, icon, context);
-        else
-            setDesign(type, context);
+        setDesign(type, context, backgroundColor, icon);
 
         // Set animation
         if (animation)
@@ -115,31 +115,39 @@ public class SnToast {
     }
 
     /**
-     * Sets the design of the standard toast message.
+     * Sets the design
      */
-    private void setDesign(@NonNull Type type, @NonNull Context context) {
-        if (Type.INFORMATION == type) {
-            toastLayout.setBackgroundColor(context.getColor(R.color.infoColor));
-            toastIcon.setImageResource(R.drawable.ic_information);
-        } else if (Type.ERROR == type) {
-            toastLayout.setBackgroundColor(context.getColor(R.color.errorColor));
-            toastIcon.setImageResource(R.drawable.ic_error);
-        } else if (Type.SUCCESS == type) {
-            toastLayout.setBackgroundColor(context.getColor(R.color.successColor));
-            toastIcon.setImageResource(R.drawable.ic_success);
-        } else if (Type.WARNING == type) {
-            toastLayout.setBackgroundColor(context.getColor(R.color.warningColor));
-            toastIcon.setImageResource(R.drawable.ic_warning);
-        }
+    private void setDesign(@NonNull Type type, @NonNull Context context, int backgroundColor, int icon) {
+        Pair<Integer, Integer> defaultValues = getDefaultDesignValues(type);
+
+        int defaultColor = defaultValues.first;
+        int defaultIcon = defaultValues.second;
+
+        toastLayout.setBackgroundColor(context.getColor(backgroundColor == 0 ? defaultColor : backgroundColor));
+        toastIcon.setImageResource(icon == 0 ? defaultIcon : icon);
     }
 
     /**
-     * Sets the design of the custom toast message.
+     * Returns default values by type
      */
-    private void setCustomDesign(int backgroundColor, int textColor, int icon, @NonNull Context context) {
-        toastMessage.setTextColor(context.getColor(textColor));
-        toastLayout.setBackgroundColor(context.getColor(backgroundColor));
-        toastIcon.setImageResource(icon);
+    private Pair<Integer, Integer> getDefaultDesignValues(@NonNull Type type) {
+        int defaultColor = 0;
+        int defaultIcon = 0;
+
+        if (type == Type.INFORMATION) {
+            defaultColor = R.color.infoColor;
+            defaultIcon = R.drawable.ic_information;
+        } else if (type == Type.ERROR) {
+            defaultColor = R.color.errorColor;
+            defaultIcon = R.drawable.ic_error;
+        } else if (type == Type.SUCCESS) {
+            defaultColor = R.color.successColor;
+            defaultIcon = R.drawable.ic_success;
+        } else if (type == Type.WARNING) {
+            defaultColor = R.color.warningColor;
+            defaultIcon = R.drawable.ic_warning;
+        }
+        return new Pair<>(defaultColor, defaultIcon);
     }
 
     /**
@@ -164,7 +172,7 @@ public class SnToast {
         return Math.round((float) dp * density);
     }
 
-    public static class Standard {
+    public static class Builder {
         private Context context;
         private String message;
         private Type type;
@@ -174,12 +182,15 @@ public class SnToast {
         private int duration = 3000;
         private int textSize = 18;
         private int iconSize = 34;
+        private @ColorRes int backgroundColor = 0;
+        private @ColorRes int textColor = R.color.white;
+        private @DrawableRes int icon = 0;
 
-        public Standard() {
+        public Builder() {
         }
 
         // Required
-        public Standard context(Context context) {
+        public Builder context(Context context) {
             this.context = context;
             if (context == null)
                 throw new AssertionError("SnToast - Context cannot be null !!!");
@@ -188,7 +199,7 @@ public class SnToast {
         }
 
         // Required
-        public Standard message(String message) {
+        public Builder message(String message) {
             this.message = message;
             if (message == null)
                 throw new AssertionError("SnToast - Message cannot be null !!!");
@@ -197,7 +208,7 @@ public class SnToast {
         }
 
         // Required
-        public Standard type(Type type) {
+        public Builder type(Type type) {
             this.type = type;
             if (type == null)
                 throw new AssertionError("SnToast - Type cannot be null !!!");
@@ -207,45 +218,67 @@ public class SnToast {
 
         // Not Required Default: "Sans-serif-condensed"
         @SuppressWarnings("unused")
-        public Standard typeface(Typeface typeface) {
+        public Builder typeface(Typeface typeface) {
             this.typeface = typeface;
             return this;
         }
 
         // Not Required Default: True
         @SuppressWarnings("unused")
-        public Standard animation(boolean animation) {
+        public Builder animation(boolean animation) {
             this.animation = animation;
             return this;
         }
 
         // Not Required Default: False
         @SuppressWarnings("unused")
-        public Standard cancelable(boolean cancelable) {
+        public Builder cancelable(boolean cancelable) {
             this.cancelable = cancelable;
             return this;
         }
 
         // Not Required Default: 3000 (ms)
         @SuppressWarnings("unused")
-        public Standard duration(int duration) {
+        public Builder duration(int duration) {
             this.duration = duration;
             return this;
         }
 
         // Not Required
         @SuppressWarnings("unused")
-        public Standard textSize(int textSize) {
+        public Builder textSize(int textSize) {
             this.textSize = textSize;
             return this;
         }
 
         // Not Required
         @SuppressWarnings("unused")
-        public Standard iconSize(int iconSize) {
+        public Builder iconSize(int iconSize) {
             this.iconSize = iconSize;
             return this;
         }
+
+        // Not Required
+        @SuppressWarnings("unused")
+        public Builder backgroundColor(int backgroundColor) {
+            this.backgroundColor = backgroundColor;
+            return this;
+        }
+
+        // Not Required
+        @SuppressWarnings("unused")
+        public Builder textColor(int textColor) {
+            this.textColor = textColor;
+            return this;
+        }
+
+        // Not Required
+        @SuppressWarnings("unused")
+        public Builder icon(int icon) {
+            this.icon = icon;
+            return this;
+        }
+
 
         /**
          * It should be called after the settings are set.
@@ -261,131 +294,6 @@ public class SnToast {
 
             SnToast snToast = new SnToast();
             snToast.init(context, message, type, typeface, animation, cancelable,
-                    duration, textSize, iconSize, 0, 0, 0);
-        }
-    }
-
-    public static class Custom {
-        private Context context;
-        private String message;
-        private int backgroundColor = 0;
-        private int textColor = 0;
-        private int icon = 0;
-        private Typeface typeface = Typeface.create("sans-serif-condensed", Typeface.NORMAL);
-        private boolean animation = true;
-        private boolean cancelable = false;
-        private int duration = 3000;
-        private int textSize = 18;
-        private int iconSize = 34;
-
-
-        public Custom() {
-        }
-
-        // Required
-        public Custom context(Context context) {
-            this.context = context;
-            if (context == null)
-                throw new AssertionError("SnToast - Context cannot be null !!!");
-            return this;
-        }
-
-        // Required
-        public Custom message(String message) {
-            this.message = message;
-            if (message == null)
-                throw new AssertionError("SnToast - Message cannot be null !!!");
-            else
-                return this;
-        }
-
-        // Required
-        public Custom backgroundColor(int backgroundColor) {
-            this.backgroundColor = backgroundColor;
-            if (backgroundColor == 0)
-                throw new AssertionError("SnToast - BackgroundColor cannot be null !!!");
-            else
-                return this;
-        }
-
-        // Required
-        public Custom textColor(int textColor) {
-            this.textColor = textColor;
-            if (textColor == 0)
-                throw new AssertionError("SnToast - TextColor cannot be null !!!");
-            else
-                return this;
-        }
-
-        // Required
-        public Custom icon(int icon) {
-            this.icon = icon;
-            if (icon == 0)
-                throw new AssertionError("SnToast - Icon cannot be null !!!");
-            else
-                return this;
-        }
-
-        // Not Required Default: "Sans-serif-condensed"
-        @SuppressWarnings("unused")
-        public Custom typeface(Typeface typeface) {
-            this.typeface = typeface;
-            return this;
-        }
-
-        // Not Required Default: True
-        @SuppressWarnings("unused")
-        public Custom animation(boolean animation) {
-            this.animation = animation;
-            return this;
-        }
-
-        // Not Required Default: False
-        @SuppressWarnings("unused")
-        public Custom cancelable(boolean cancelable) {
-            this.cancelable = cancelable;
-            return this;
-        }
-
-        // Not Required Default: 3000 (ms)
-        @SuppressWarnings("unused")
-        public Custom duration(int duration) {
-            this.duration = duration;
-            return this;
-        }
-
-        // Not Required Default: 18 sp
-        @SuppressWarnings("unused")
-        public Custom textSize(int textSize) {
-            this.textSize = textSize;
-            return this;
-        }
-
-        // Not Required Default: 34 dp
-        @SuppressWarnings("unused")
-        public Custom iconSize(int iconSize) {
-            this.iconSize = iconSize;
-            return this;
-        }
-
-        /**
-         * It should be called after the settings are set.
-         */
-        // Required
-        public void build() {
-            if (context == null)
-                throw new AssertionError("SnToast - Context assignment is required.");
-            if (message == null)
-                throw new AssertionError("SnToast - Message assignment is required.");
-            if (backgroundColor == 0)
-                throw new AssertionError("SnToast - BackgroundColor assignment is required.");
-            if (textColor == 0)
-                throw new AssertionError("SnToast - TextColor assignment is required.");
-            if (icon == 0)
-                throw new AssertionError("SnToast - Icon assignment is required.");
-
-            SnToast snToast = new SnToast();
-            snToast.init(context, message, null, typeface, animation, cancelable,
                     duration, textSize, iconSize, backgroundColor, textColor, icon);
         }
     }

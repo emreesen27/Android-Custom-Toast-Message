@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void normalToast(View view) {
         Typeface type = ResourcesCompat.getFont(getApplicationContext(), R.font.example);
-        new SnToast.Standard()
+        new SnToast.Builder()
                 .context(MainActivity.this)
                 .type(Type.SUCCESS)
                 .message("Success !")
@@ -31,24 +31,9 @@ public class MainActivity extends AppCompatActivity {
                 // .textSize(int size) Optional Default 18sp
                 // .animation(false or true) Optional Default: True
                 // .duration(int ms) Optional Default: 3000ms
+                // .backgroundColor(R.color.black) Default: It is filled according to the toast type. If an assignment is made, the assigned value is used
+                // .icon(R.drawable.abc_vector_test) Default: It is filled according to the toast type. If an assignment is made, the assigned value is used
                 .build();
     }
 
-    public void customToast(View view) {
-        Typeface type = ResourcesCompat.getFont(getApplicationContext(), R.font.example);
-        new SnToast.Custom()
-                .context(MainActivity.this)
-                .backgroundColor(R.color.teal_200)
-                .textColor(R.color.white)
-                .icon(R.drawable.ic_launcher_foreground)
-                .message("Custom !!!")
-                .typeface(type)
-                //.typeface(type) Optional Default: sans-serif-condensed
-                //.cancelable(false or true) Optional Default: False
-                // .iconSize(int size) Optional Default: 34dp
-                // .textSize(int size) Optional Default 18sp
-                // .animation(false or true) Optional Default: True
-                // .duration(int ms) Optional Default: 3000ms
-                .build();
-    }
 }

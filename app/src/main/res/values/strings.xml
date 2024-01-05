@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">SnToastExample</string>
     <string name="success">Success !</string>
-    <string name="custom">Custom !</string>
-    <string name="normal">normal</string>
+    <string name="show">Show</string>
 </resources>
